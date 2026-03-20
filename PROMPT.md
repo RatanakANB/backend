@@ -28,7 +28,7 @@ app/
 ├── adapters/               # CONCRETE IMPLEMENTATIONS (External service connectors)
 │   ├── groq_adapter.py     # Groq API implementation of LLMPort
 │   ├── openai_adapter.py   # [FUTURE] OpenAI implementation of LLMPort
-│   ├── sqlite_adapter.py   # [FUTURE] SQLite implementation of DatabasePort
+   ├── database.py         # SQLite implementation with SQLAlchemy ORM
 │   └── __init__.py
 ├── domain/                 # BUSINESS LOGIC (Core app logic, independent of frameworks)
 │   ├── schemas.py          # Pydantic models (request/response validation)
@@ -336,7 +336,7 @@ class DocumentationService:
    ```env
    GROQ_API_KEY=your_key_here
    GROQ_MODEL=llama-3.3-70b-versatile
-   # DATABASE_URL=sqlite:///./vibe.db
+   # DATABASE_URL=sqlite:///./docs.db
    # OPENAI_API_KEY=sk-...
    ```
 

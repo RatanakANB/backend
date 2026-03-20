@@ -1,18 +1,19 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app.domain.schemas import DocumentationRequest
 from app.domain.services import DocumentationService
 from app.adapters.groq_adapter import GroqAdapter
+from app.adapters.sqlite_history_adapter import SQLiteHistoryAdapter
 
 router = APIRouter()
 
-# Dependency Injection for Adapters (Makes replacing Groq with another Provider incredibly easy later format-wise)
-# Beginners: The router handles ONLY the web connection side of things (HTTP rules).
+# Dependency Injection
 groq_client = GroqAdapter()
-doc_service = DocumentationService(llm_client=groq_client)
+sqlite_history = SQLiteHistoryAdapter()
+doc_service = DocumentationService(llm_client=groq_client, history_client=sqlite_history)
 
 @router.post("")
-def documentation_generator_endpoint(request: DocumentationRequest):
+async def documentation_generator_endpoint(request: DocumentationRequest):
     """
     Primary Request Adapter: Receives standard HTTP request, passes straight to Service Layer Domain Logic.
     """
-    return doc_service.generate_documentation(request)
+    return await doc_service.generate_documentation(request)
